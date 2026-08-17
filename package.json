@@ -1,0 +1,23 @@
+{
+  "name": "mp-sdk",
+  "version": "1.0.0",
+  "description": "跨平台 JSBridge SDK 工程",
+  "private": true,
+  "scripts": {
+    "build:proto": "cd specs/proto-codegen && npm run build",
+    "codegen:harmony": "node scripts/proto-codegen-harmony.js",
+    "build:android": "cd android && gradlew.bat :and_web_library:assembleRelease && cd .. && node scripts/post-build.js android",
+    "build:harmony": "node scripts/build-harmony.js && node scripts/post-build.js harmony",
+    "build:web": "cd vue-web-sdk && npm run build && npm pack && cd .. && node scripts/post-build.js web",
+    "build:all": "npm run build:android && npm run build:harmony && npm run build:web",
+    "install:web-sdk": "cd vue-web-sdk && npm install",
+    "install:vue-web": "cd vue-web && npm install",
+    "install:all": "npm run install:web-sdk && npm run install:vue-web"
+  },
+  "devDependencies": {
+    "vite": "^5.4.21"
+  },
+  "dependencies": {
+    "@mp-sdk/proto-codegen": "file:specs/proto-codegen"
+  }
+}

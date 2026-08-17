@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP-SDK 鸿蒙数据同步验证</title>
+    <style>
+        body { font-family: sans-serif; margin: 16px; background: #f5f5f5; }
+        .card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card h3 { margin: 0 0 8px; font-size: 14px; color: #666; }
+        .card .data { font-size: 14px; color: #333; word-break: break-all; min-height: 20px; }
+        .card .data.empty { color: #ccc; }
+        .header { text-align: center; padding: 20px 0; }
+        .header h1 { font-size: 18px; color: #333; }
+        .status { text-align: center; font-size: 12px; color: #999; margin-top: 16px; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; color: #fff; background: #4caf50; margin-left: 4px; }
+        .badge.pending { background: #ff9800; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>MP-SDK 鸿蒙数据同步验证</h1>
+    </div>
+
+    <div class="card">
+        <h3 id="userInfoTitle">用户信息 (syncUserInfo) <span id="userInfoBadge" class="badge pending">等待中</span></h3>
+        <div id="userInfo" class="data empty">尚未接收</div>
+    </div>
+
+    <div class="card">
+        <h3 id="loanInfoTitle">借款信息 (syncLoanInfo) <span id="loanInfoBadge" class="badge pending">等待中</span></h3>
+        <div id="loanInfo" class="data empty">尚未接收</div>
+    </div>
+
+    <div class="card">
+        <h3>会员信息 (syncVipInfo) <span id="vipInfoBadge" class="badge pending">等待中</span></h3>
+        <div id="vipInfo" class="data empty">尚未接收</div>
+    </div>
+
+    <div class="status" id="platformInfo">检测平台中...</div>
+
+    <script>
+        (function() {
+            // 检测平台（从 URL 参数读取）
+            var params = new URLSearchParams(window.location.search);
+            var platform = params.get('platform') || 'unknown';
+            document.getElementById('platformInfo').textContent = '当前平台: ' + platform;
+
+            // 等待 dsBridge 就绪
+            function setupBridge(callback) {
+                if (window.dsBridge) {
+                    callback(window.dsBridge);
+                } else {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        if (window.dsBridge) {
+                            callback(window.dsBridge);
+                        } else {
+                            // 轮询等待
+                            var timer = setInterval(function() {
+                                if (window.dsBridge) {
+                                    clearInterval(timer);
+                                    callback(window.dsBridge);
+                                }
+                            }, 100);
+                        }
+                    });
+                }
+            }
+
+            setupBridge(function(bridge) {
+                // 注册 syncUserInfo Handler — 接收 Native 推送的用户信息
+                bridge.register('syncUserInfo', function(data) {
+                    var el = document.getElementById('userInfo');
+                    var badge = document.getElementById('userInfoBadge');
+                    el.textContent = typeof data === 'string' ? data : JSON.stringify(data);
+                    el.classList.remove('empty');
+                    badge.textContent = '已接收';
+                    badge.classList.remove('pending');
+                    return 'ok';
+                });
+
+                // 注册 syncLoanInfo Handler — 接收 Native 推送的借款信息
+                bridge.register('syncLoanInfo', function(data) {
+                    var el = document.getElementById('loanInfo');
+                    var badge = document.getElementById('loanInfoBadge');
+                    el.textContent = typeof data === 'string' ? data : JSON.stringify(data);
+                    el.classList.remove('empty');
+                    badge.textContent = '已接收';
+                    badge.classList.remove('pending');
+                    return 'ok';
+                });
+
+                // 注册 syncVipInfo Handler — 接收 Native 推送的会员信息
+                bridge.register('syncVipInfo', function(data) {
+                    var el = document.getElementById('vipInfo');
+                    var badge = document.getElementById('vipInfoBadge');
+                    el.textContent = typeof data === 'string' ? data : JSON.stringify(data);
+                    el.classList.remove('empty');
+                    badge.textContent = '已接收';
+                    badge.classList.remove('pending');
+                    return 'ok';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "name": "@mp-sdk/bridge",
+  "version": "1.0.0",
+  "description": "跨平台 JSBridge SDK - 提供统一的 JS <-> Native 桥接通信能力",
+  "type": "module",
+  "main": "./dist/mp-bridge.cjs",
+  "module": "./dist/mp-bridge.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mp-bridge.js",
+      "require": "./dist/mp-bridge.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vue-tsc --declaration --emitDeclarationOnly --outDir dist",
+    "pack": "npm pack",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@mp-sdk/proto-codegen": "file:../specs/proto-codegen"
+  },
+  "peerDependencies": {
+    "axios": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "axios": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "~5.6.0",
+    "vite": "^5.4.21",
+    "vite-plugin-dts": "^4.3.0",
+    "vue-tsc": "^2.1.0"
+  },
+  "keywords": [
+    "jsbridge",
+    "bridge",
+    "webview",
+    "cross-platform"
+  ],
+  "license": "Apache-2.0"
+}

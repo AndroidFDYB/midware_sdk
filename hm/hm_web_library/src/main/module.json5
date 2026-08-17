@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "hm_web_library",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
