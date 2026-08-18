@@ -60,7 +60,7 @@ mp_sdk/
 │   ├── Design.md                   # 架构设计文档
 │   └── Wiki.md                     # 架构变更记录
 │
-├── specsv2/                        # SSD 规范驱动开发文档
+├── specs/                        # SSD 规范驱动开发文档
 │   ├── proposal.md                 # 需求 + 功能模块 + 接口 + 任务 DAG
 │   ├── constraints.md              # 项目/技术栈/团队约束
 │   ├── harness.md                  # Harness 军团规范
@@ -247,10 +247,10 @@ Web({ src: url, controller: controller })
 |------|------|------|
 | 架构设计 | `specs/Design.md` | 完整的架构决策、模块依赖、API 参考 |
 | 变更记录 | `specs/Wiki.md` | 架构演进与关键决策历史 |
-| 需求规范 | `specsv2/proposal.md` | 功能需求、模块接口、任务 DAG |
-| 约束规范 | `specsv2/constraints.md` | 项目/技术栈/团队约束 |
-| Harness 规范 | `specsv2/harness.md` | 从需求到验收的 Harness 军团规范 |
-| 能力接入 | `specsv2/capabilities.md` | MCP/Skill 接入规范 |
+| 需求规范 | `specs/proposal.md` | 功能需求、模块接口、任务 DAG |
+| 约束规范 | `specs/constraints.md` | 项目/技术栈/团队约束 |
+| Harness 规范 | `specs/harness.md` | 从需求到验收的 Harness 军团规范 |
+| 能力接入 | `specs/capabilities.md` | MCP/Skill 接入规范 |
 
 ---
 
