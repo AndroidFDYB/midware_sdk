@@ -277,8 +277,4 @@ export HOS_SDK_HOME=/path/to/HarmonyOS-SDK
 - 构建脚本使用 Node.js，不使用 PowerShell 专有命令
 - 所有构建入口统一在根目录 `package.json` 的 npm scripts
 
----
 
-## License
-
-Proprietary — 内部项目，请勿外传。
