@@ -1,5 +1,7 @@
 // AUTO-GENERATED from proto. DO NOT EDIT.
 
+import { DataSyncChannel } from './DataSyncChannels';
+
 /**
  * Native → JS 推送数据时调用的 JSBridge 方法名
  * 由 proto codegen 自动生成

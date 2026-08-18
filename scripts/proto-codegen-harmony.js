@@ -134,6 +134,8 @@ function generateMethodsEts(messages) {
 
   return `// AUTO-GENERATED from proto. DO NOT EDIT.
 
+import { DataSyncChannel } from './DataSyncChannels';
+
 /**
  * Native → JS 推送数据时调用的 JSBridge 方法名
  * 由 proto codegen 自动生成
@@ -173,18 +175,17 @@ function generateSettersEts(messages) {
 
   return `// AUTO-GENERATED from proto. DO NOT EDIT.
 
+import { DataSyncChannel } from './DataSyncChannels';
+
 /**
- * DataSyncHelper 的 setter 方法
+ * DataSyncHelper 的 setter 抽象基类
  * 由 proto codegen 自动生成
- * 通过混入（mixin）或直接在 DataSyncHelper 中导入使用
- *
- * 使用方式：
- * 在 DataSyncHelper 类中添加以下代码，或通过装饰器/混入模式注入：
- *   // 导入生成的 setter 声明
- *   import { DataSyncSetters } from './generated/DataSyncSetters';
- *   // 应用到 DataSyncHelper 原型上
+ * DataSyncHelper 继承此类，提供 setData() 实现
  */
-export class DataSyncSetters {
+export abstract class DataSyncSetters {
+  /** 子类实现：设置指定通道的业务数据 */
+  abstract setData(channel: string, data: string): void;
+
 ${setters}
 }
 `;

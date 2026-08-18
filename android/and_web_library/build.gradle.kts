@@ -11,6 +11,18 @@ plugins {
 // ========================================
 // 解析 specs/proto/channels.proto 生成 Kotlin 源码（注解、通道常量、方法映射、setter）
 // proto 变化时自动触发增量重新生成
+
+// Gradle 9.x 不允许在执行阶段直接解析其他项目的 runtimeClasspath（无独占锁），
+// 需通过本地 resolvable configuration + 依赖声明引用 :proto-codegen
+val codegenClasspath: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+dependencies {
+    codegenClasspath(project(":proto-codegen"))
+}
+
 val protoCodegen by tasks.registering(JavaExec::class) {
     group = "codegen"
     description = "Generate Kotlin source from .proto files"
@@ -25,9 +37,8 @@ val protoCodegen by tasks.registering(JavaExec::class) {
     }
     outputs.dir(outputBase)
 
-    val codegenProject = project(":proto-codegen")
-    dependsOn(codegenProject.tasks.named("compileKotlin"))
-    classpath = codegenProject.sourceSets.getByName("main").runtimeClasspath
+    dependsOn(project(":proto-codegen").tasks.named("compileKotlin"))
+    classpath = codegenClasspath
     mainClass = "com.sharknade.and_web_library.codegen.MainKt"
 
     argumentProviders.add(CommandLineArgumentProvider {

@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".webview.DataSyncDemoActivity"
             android:exported="false"
             android:label="数据同步验证" />

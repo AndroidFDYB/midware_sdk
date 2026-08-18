@@ -147,6 +147,32 @@ Harness 是一种 **从需求到验收** 的工程管控体系。PM Agent 作为
 
 **这是 Harness 体系的核心阶段。**
 
+> **强制规则**：每个 SubAgent 完成代码修改后，必须由 Test SubAgent 执行构建命令验证。代码修改未通过构建验证不算完成。
+
+#### 2.4.0 构建验证门禁（Build Gate）
+
+代码变更后的**第一道关卡**，必须在任何任务标记完成前通过：
+
+```
+SubAgent 回报“实现完成”
+    │
+    ▼
+Test SubAgent 执行构建命令（Bash）
+    │
+    ├── BUILD SUCCESSFUL → 检查产物 → 标记任务完成
+    ├── BUILD FAILED → 回传错误 → SubAgent 修复 → 重新验证
+    └── 未执行构建 → 禁止标记完成（流程违规）
+```
+
+**构建验证命令清单**：
+
+| 变更范围 | 执行命令 | 通过标准 |
+|---------|---------|----------|
+| Android SDK | `cd android; .\gradlew.bat :and_web_library:assembleDebug` | BUILD SUCCESSFUL |
+| 鸿蒙 SDK | `npm run build:harmony` | BUILD SUCCESSFUL + HAR 输出 |
+| 前端 SDK | `npm run build:web` | vite build 无错误 + TGZ 输出 |
+| 全部三端 | `npm run build:all` | 三端均成功 + output/ 完整 |
+
 #### 2.4.1 测试分层
 
 | 层级 | 测试类型 | 工具/方法 | 触发时机 |
@@ -194,16 +220,18 @@ Harness 是一种 **从需求到验收** 的工程管控体系。PM Agent 作为
 - 变更文件: {files}
 
 ## 测试步骤
-1. 执行编译测试: {build_command}
+1. **执行构建验证（强制）**: `{build_command}` → 确认 BUILD SUCCESSFUL
 2. 检查生成产物: {artifacts_to_check}
 3. 运行示例验证: {demo_command}
 
 ## 回传格式
-- 编译测试: PASS / FAIL + 错误日志（仅失败时）
+- 构建验证: PASS / FAIL + 错误日志（仅失败时）
 - 产物检查: PASS / FAIL + 差异描述
 - 示例验证: PASS / FAIL + 行为描述
 - 总体结论: ACCEPTED / REJECTED
 - 建议修复（如 REJECTED）: [具体建议]
+
+> **禁止**：未执行构建命令就回传 ACCEPTED。
 ```
 
 ---

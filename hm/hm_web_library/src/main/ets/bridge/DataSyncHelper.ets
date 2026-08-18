@@ -47,6 +47,7 @@
 import { JSBridgeManager } from './JSBridge';
 import { DataSyncChannel } from '../generated/DataSyncChannels';
 import { DataSyncMethod } from '../generated/DataSyncMethods';
+import { DataSyncSetters } from '../generated/DataSyncSetters';
 
 // ========================
 // 同步状态枚举
@@ -94,7 +95,7 @@ class ChannelState {
  * 因鸿蒙 AOP 能力较差，不使用注解方式，
  * 调用方在构造时直接传入所需的数据通道列表。
  */
-export class DataSyncHelper {
+export class DataSyncHelper extends DataSyncSetters {
   /** JSBridge 管理器，用于调用 JS 方法推送数据 */
   private bridgeManager: JSBridgeManager;
 
@@ -122,6 +123,7 @@ export class DataSyncHelper {
     requiredChannels: string[] = [],
     debug: boolean = false
   ) {
+    super();
     this.bridgeManager = bridgeManager;
     this.debug = debug;
     this.requiredChannels = new Set(requiredChannels);
@@ -178,20 +180,7 @@ export class DataSyncHelper {
   // 设置业务数据
   // ========================
 
-  /** 设置用户信息数据（uid + ticket） */
-  setUserInfo(data: string): void {
-    this.setData(DataSyncChannel.USER_INFO, data);
-  }
-
-  /** 设置借款信息数据 */
-  setLoanInfo(data: string): void {
-    this.setData(DataSyncChannel.LOAN_INFO, data);
-  }
-
-  /** 设置会员信息数据 */
-  setVipInfo(data: string): void {
-    this.setData(DataSyncChannel.VIP_INFO, data);
-  }
+  // setUserInfo / setLoanInfo / setVipInfo 由 proto codegen 生成（DataSyncSetters 基类）
 
   /**
    * 设置指定通道的业务数据

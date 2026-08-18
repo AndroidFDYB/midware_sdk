@@ -17,6 +17,8 @@ import com.sharknade.and_web_library.NeedsUserInfo
 import com.sharknade.and_web_library.NeedsLoanInfo
 import com.sharknade.and_web_library.SyncState
 import com.sharknade.and_web_library.generated.DataSyncBindings
+import com.sharknade.and_web_library.setLoanInfo
+import com.sharknade.and_web_library.setUserInfo
 
 /**
  * 数据同步验证 Activity（组合模式 + KSP 注入）

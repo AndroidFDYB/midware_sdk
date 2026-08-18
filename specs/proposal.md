@@ -289,7 +289,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | `specs/proto/channels.proto` 文件，解析器单元测试通过 |
 | **上游依赖** | 无（起点任务） |
 | **下游依赖** | T2, T3, T4 |
-| **验收标准** | proto 文件格式合法，三端解析器均能正确解析 |
+| **验收标准** | proto 文件格式合法，三端解析器均能正确解析。**验证命令：`npm run build:proto`** |
 
 ---
 
@@ -304,7 +304,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | `specs/proto-codegen/src/` 下 parser.ts, naming.ts, model.ts, index.ts |
 | **上游依赖** | T1 |
 | **下游依赖** | T5, T7, T8 |
-| **验收标准** | 能正确解析 message/field/repeated，命名推导符合约定 |
+| **验收标准** | 能正确解析 message/field/repeated，命名推导符合约定。**验证命令：`npm run build:proto` 成功** |
 
 ---
 
@@ -319,7 +319,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | `android/proto-codegen/` 下 Main.kt, ProtoParser.kt, CodeGenerators.kt, NamingConventions.kt |
 | **上游依赖** | T1 |
 | **下游依赖** | T6 |
-| **验收标准** | 生成注解、通道常量、方法映射、setter、channel-mappings.json 均正确 |
+| **验收标准** | 生成注解、通道常量、方法映射、setter、channel-mappings.json 均正确。**验证命令：`cd android; .\gradlew.bat :and_web_library:assembleDebug` BUILD SUCCESSFUL + protoCodegen 生成 5 个文件** |
 
 ---
 
@@ -364,7 +364,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | and_web_library/ + data-sync-processor/ 全部源码 |
 | **上游依赖** | T3 |
 | **下游依赖** | T9 |
-| **验收标准** | Gradle 构建成功，KSP 正确生成 DataSyncBindings，无运行时反射 |
+| **验收标准** | Gradle 构建成功，KSP 正确生成 DataSyncBindings，无运行时反射。**验证命令：`cd android; .\gradlew.bat :and_web_library:assembleDebug` BUILD SUCCESSFUL + 检查 DataSyncBindings.kt 内容** |
 
 ---
 
@@ -394,7 +394,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | DataSyncHelper.ets + generated/*.ets + proto-codegen-harmony.js |
 | **上游依赖** | T2, T7 |
 | **下游依赖** | T9 |
-| **验收标准** | 数据推送/状态管理正常，生成产物与 proto 一致 |
+| **验收标准** | 数据推送/状态管理正常，生成产物与 proto 一致。**验证命令：`npm run build:harmony` BUILD SUCCESSFUL + 检查 generated/*.ets** |
 
 ---
 
@@ -409,7 +409,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | scripts/ + output/ + vue-web/ + android/app/ |
 | **上游依赖** | T5, T6, T8 |
 | **下游依赖** | T10 |
-| **验收标准** | `npm run build:all` 成功，三端示例可运行 |
+| **验收标准** | `npm run build:all` 成功，三端示例可运行。**构建验证（强制）：Android BUILD SUCCESSFUL + 鸿蒙 BUILD SUCCESSFUL + 前端无错误 + output/ 产物完整** |
 
 ---
 
@@ -424,7 +424,7 @@ function toConstant(messageName: string): string;           // → UPPER_SNAKE_C
 | **输出** | 更新的 Design.md, Wiki.md, README.md |
 | **上游依赖** | T9 |
 | **下游依赖** | 无（终点任务） |
-| **验收标准** | 三端集成示例可运行，文档与代码一致 |
+| **验收标准** | 三端集成示例可运行，文档与代码一致。**验证命令：`npm run build:all` 全量通过 + 产物检查 + 文档检查** |
 
 ---
 
@@ -453,6 +453,8 @@ T1 (Proto Schema)
 ```
 
 ### 4.3 并行执行策略
+
+> **构建验证强制规则**：每个任务完成后，必须执行对应构建命令验证（详见 [harness.md §2.4.0](harness.md) 构建验证门禁）。未通过构建验证的任务不允许标记完成。
 
 | 阶段 | 可并行任务 | SubAgent 数量 |
 |------|-----------|---------------|
